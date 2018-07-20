@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Manage";
+    Layout = "~/Views/Shared/_LayoutManage.cshtml";
+}
+<link href="~/Content/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<style type="text/css">
+    .dataImg {
+        max-height: 100px;
+        max-width: 150px;
+    }
+    .control
+    {
+        cursor:pointer;
+    }
+</style>
+
+<div class="row main-content">
+    <button class="btn btn-success" style="font-size:24px"><i class="fa fa-plus"></i></button>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Image</th>
+                <th>CreatedOn</th>
+                <th>Control</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            loadDataTable()
+        });
+        function loadDataTable() {
+            $('#example').DataTable({
+            "ajax": ({
+                dataType: "json",
+                url: '@Url.Action("MasterList", "home")',
+                type: 'POST',
+                }),
+                "columns": [
+                    { "data": "Movies_ID" },
+                    { "data": "Movies_Name" },
+                    { "data": "Movies_Time" },
+                    {
+                        "data": function (data, type, row) {
+                            var html = '<a href="#" id="' + data.Movies_ID + '" class="thumbnail dataImg"> <img src="/' + data.Movies_Image + '" alt="' + data.Movies_Name + '">' +'</a>';
+                            return html;
+                        }
+                    },
+                    {
+                        "data": function (data, type, row) {
+                            var html = '<div class="row">'+
+                                '<div class="col-md-4" onclick="editFunction(' + data.Movies_ID+')"><i class="control fa fa-pencil"></i></div>' +
+                                '<div class="col-md-4" onclick="delFunction(' + data.Movies_ID+')"><i class="control fa fa-trash"></i></div>' +                                
+                                '</div>';
+                            return html;
+                        }
+                    }
+                ], 'columnDefs': [
+                    {
+                        "targets": 4, // your case first column
+                        "className": "text-center",
+                        "width": "10%"
+                    },]
+            });
+        }
+        function editFunction(id) {
+            console.log(id)
+        }
+        function delFunction(id) {
+            console.log('delFunction:'+id)
+        }
+    </script>
+}

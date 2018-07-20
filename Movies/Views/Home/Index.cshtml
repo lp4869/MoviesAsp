@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Movies";
+}
+@model IEnumerable<Movies.Models.MoviesView>
+
+
+    <div class="row main-content">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-xs-6 col-md-3">
+                <a href="@Url.Action("Season","Home")?id=@item.Movies_ID" id="@item.Movies_ID" class="thumbnail">
+                    <img src="@item.Movies_Image" alt="@item.Movies_Name">
+                    <div class="caption">
+                        <center><p>@item.Movies_Name</p></center>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
